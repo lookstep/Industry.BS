@@ -1,6 +1,7 @@
 using EmoloyeeTask.API.Auth;
 using EmoloyeeTask.Data;
 using EmoloyeeTask.Data.Interfaces;
+using EmoloyeeTask.Data.Repositories;
 using EmployeeTask.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -52,13 +53,27 @@ builder.Services.AddAuthorization(options =>
     .RequireAuthenticatedUser()
     .Build();
 });
-builder.Services.AddSwaggerGen(c => 
+builder.Services.AddSwaggerGen(c =>
 {
     var filePath = Path.Combine(AppContext.BaseDirectory, "EmployeeTask.Shared.xml");
     var sharedFilePath = Path.Combine(AppContext.BaseDirectory, "EmoloyeeTask.API.xml");
 
     c.IncludeXmlComments(filePath);
     c.IncludeXmlComments(sharedFilePath);
+    c.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        TermsOfService = new Uri("http://industryerp.site"),
+        Contact = new OpenApiContact
+        {
+            Name = "Example Contact",
+            Url = new Uri("http://industryerp.site/contact")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("http://industryerp.site/license")
+        }
+    });
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -68,24 +83,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<IDbRepository<Employee>, EmployeeRepository>();
-builder.Services.AddScoped<IDbRepository<Division>,  DivisionRepository>();
-builder.Services.AddScoped<IDbRepository<Project> , ProjectRepository>();
+builder.Services.AddScoped<IDbRepository<Division>, DivisionRepository>();
+builder.Services.AddScoped<IDbRepository<Project>, ProjectRepository>();
 builder.Services.AddScoped<IDbRepository<Issue>, AssignmentRepository>();
 builder.Services.AddScoped<IDbRepository<LaborCost>, LaborCostRepository>();
+builder.Services.AddScoped<IDbRepository<Document>, DocumentRepository>();
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();

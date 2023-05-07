@@ -14,5 +14,6 @@ namespace EmoloyeeTask.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Issue> Assignments { get; set; }
         public DbSet<LaborCost> LaborCosts { get; set; }
+        public DbSet<Document> Documents { get; set; }
     }
 }
