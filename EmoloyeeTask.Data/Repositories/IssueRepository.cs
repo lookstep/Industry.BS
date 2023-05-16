@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeTask.Data.Repositories
 {
-    public class AssignmentRepository : DbRepository<Issue>
+    public class IssueRepository : DbRepository<Issue>
     {
         private readonly AppDbContext _db;
-        public AssignmentRepository(AppDbContext db) : base(db)
+        public IssueRepository(AppDbContext db) : base(db)
         {
             _db = db;
         }
@@ -19,7 +19,6 @@ namespace EmployeeTask.Data.Repositories
             }
             var result = await _db.Assignments.AddAsync(taskForEmployee);
 
-                        
             await _db.SaveChangesAsync();
 
             return result.Entity;

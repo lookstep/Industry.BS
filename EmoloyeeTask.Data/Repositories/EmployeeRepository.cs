@@ -39,12 +39,14 @@ namespace EmployeeTask.Data.Repositories
         {
             return await _db.Employees
                             .Include(x => x.Division)
+                            .Include(x => x.LaborCosts)
                             .FirstOrDefaultAsync(x => x.Id == id);
         }
         public override async Task<IEnumerable<Employee>> GetAll()
         {
             return await _db.Employees
                             .Include(x => x.Division)
+                            .Include(x => x.LaborCosts)
                             .ToListAsync();
         }
         public override async Task<Employee> Update(Employee employee)

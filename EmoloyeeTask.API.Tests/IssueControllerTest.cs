@@ -9,7 +9,7 @@ using Xunit;
 
 namespace EmoloyeeTask.API.Tests
 {
-    public class AssigmentControllerTest
+    public class IssueControllerTest
     {
         [Fact]
         public void GetAllAssigmentStatusInternalServerError()

@@ -7,12 +7,12 @@ using Xunit;
 
 namespace EmoloyeeTask.Data.Test
 {
-    public class AssignmentRepositoryTest
+    public class IssueRepositoryTest
     {
         private readonly DbContextOptions<AppDbContext> _contextOptions;
         private readonly AppDbContext _context;
 
-        public AssignmentRepositoryTest()
+        public IssueRepositoryTest()
         {
             _contextOptions = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("GetAssigmentTest")
@@ -39,7 +39,7 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new AssignmentRepository(_context);
+            var repository = new IssueRepository(_context);
 
             //act
             var result = repository.Get(id: 2).GetAwaiter().GetResult();
@@ -67,7 +67,7 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new AssignmentRepository(_context);
+            var repository = new IssueRepository(_context);
 
             //act
             var result = repository.GetAll().GetAwaiter().GetResult();
@@ -95,7 +95,7 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new AssignmentRepository(_context);
+            var repository = new IssueRepository(_context);
 
             var changedAssignment = new Issue() { Id = 1, TaskName = "Сделать круто", ProjectId = 1 };
 
@@ -120,7 +120,7 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new AssignmentRepository(_context);
+            var repository = new IssueRepository(_context);
 
             var addedAssignment = new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 };
 
@@ -153,7 +153,7 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new AssignmentRepository(_context);
+            var repository = new IssueRepository(_context);
 
             var deletedAssignment = _context.Assignments.FirstOrDefault(x => x.Id == 3);
 
