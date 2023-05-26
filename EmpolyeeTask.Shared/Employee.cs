@@ -29,6 +29,11 @@ namespace EmployeeTask.Shared
         /// Роль
         /// </summary>
         public string Role { get; set; }
+
+        /// <summary>
+        /// Почтовый адресс
+        /// </summary>
+        public string Email { get; set; }
         /// <summary>
         /// Вторичный ключ подразделения
         /// </summary>
@@ -38,6 +43,15 @@ namespace EmployeeTask.Shared
         /// Отчество
         /// </summary>
         public string? LastName { get; set; }
+
+        /// <summary>
+        /// Картинка профиля
+        /// </summary>
+        public string? IconPath { get; set; }
+        /// <summary>
+        /// Буфер для нового пароля
+        /// </summary>
+        public string? NewPassword { get; set; }
         /// <summary>
         /// Табельный номер
         /// </summary>

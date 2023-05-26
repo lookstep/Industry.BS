@@ -1,6 +1,7 @@
 ﻿using EmoloyeeTask.API.Auth;
 using EmoloyeeTask.Data.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,20 +29,27 @@ namespace EmoloyeeTask.API.Controllers
         /// <param name="employeeModle">Сотрудник</param>
         /// <returns>Декодированный токен ключ</returns>
         [HttpPost("token")]
-        public ActionResult Token([FromBody] Employee employeeModle)
+        public ActionResult Token([FromBody] Employee employeeModel)
         {
-            var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.FirstName == employeeModle.FirstName);
+            var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.Id == employeeModel.Id);
 
             if (employee == null)
-                return BadRequest();
-            if(employee.Password != employeeModle.Password)
-                return BadRequest();
+                return BadRequest("Пользователь не найден");
+
+            // Создайте экземпляр PasswordHasher
+            var hasher = new PasswordHasher<Employee>();
+            // Проверьте хэш пароля
+
+            var verifyResult = hasher.VerifyHashedPassword(employee, employee.Password, employeeModel.Password);
+
+            if (verifyResult == PasswordVerificationResult.Failed)
+                return BadRequest("Неверный пароль");
 
             var token = GetJwt(employee);
             var decode = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            return Ok(decode.ToString());
-
+            return Ok(token);
         }
+
         private string GetJwt(Employee employee)
         {
             var nowDate = DateTime.Now;
@@ -64,9 +72,9 @@ namespace EmoloyeeTask.API.Controllers
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, employee.FirstName),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, employee.Role),
-                new Claim(ClaimTypes.NameIdentifier, employee.FirstName)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, employee.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString())
             };
             return claims;
         }

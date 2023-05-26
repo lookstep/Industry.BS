@@ -1,4 +1,5 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeTask.API.Controllers
@@ -24,6 +25,7 @@ namespace EmployeeTask.API.Controllers
         /// </summary>
         /// <returns>Список пректов</returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<Project>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
@@ -43,6 +45,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">Уникальный ключ</param>
         /// <returns>конкретный проект</returns>
         [HttpGet("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Project), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
@@ -68,6 +71,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="project">проект</param>
         /// <returns>созданный проект</returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(typeof(Project), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
@@ -94,6 +98,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="project">Видоизменённые данные о проект</param>
         /// <returns>Видоизменённый проект</returns>
         [HttpPut("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Project), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -123,6 +128,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">Уникальнеый ключ</param>
         /// <returns>Код 200 если удаление прошло успешно, код 404 если не найден проект по id, код 500 если случилась ошибка сервера</returns>
         [HttpDelete("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Project), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]

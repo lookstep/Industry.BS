@@ -1,4 +1,6 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeTask.API.Controllers
@@ -78,6 +80,11 @@ namespace EmployeeTask.API.Controllers
                 if (employee == null)
                     return BadRequest("Данные о сотруднике не заполненны пустое или некорректно введены");
 
+                // Создайте экземпляр PasswordHasher
+                var hasher = new PasswordHasher<Employee>();
+                // Хэшируйте пароль перед сохранением
+                employee.Password = hasher.HashPassword(employee, employee.Password);
+
                 var createEmployee = await _employeeRepository.Add(employee);
                 return CreatedAtAction(nameof(GetEmployee), new { id = createEmployee.Id }, createEmployee);
             }
@@ -85,7 +92,6 @@ namespace EmployeeTask.API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось добавить нового отрудника");
             }
-
         }
         /// <summary>
         /// Обновление данных о сотруднике
@@ -121,6 +127,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">уникальный ключ</param>
         /// <returns>Статус http 200 если сотрудник найден и удалён, 404 если сотрудника с нужным id нет, 500 - ошибка сервера при удалении сотрудника</returns>
         [HttpDelete("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]

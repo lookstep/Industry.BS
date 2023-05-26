@@ -1,4 +1,5 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeTask.API.Controllers
@@ -24,6 +25,7 @@ namespace EmployeeTask.API.Controllers
         /// </summary>
         /// <returns>Список пзадач для работников</returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<Issue>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<Issue>>> GetTasksForEmployees()
@@ -43,6 +45,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">уникальный ключ</param>
         /// <returns>конкретная задача</returns>
         [HttpGet("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Issue), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
@@ -68,6 +71,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="taskForEmployee">Новая задача</param>
         /// <returns>Созданное задание</returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(typeof(Issue), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
@@ -93,6 +97,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="taskForEmployee">Задача, данные о которой мы хотим изменить</param>
         /// <returns>Обновленные данные задачи</returns>
         [HttpPut("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Issue), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -122,6 +127,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">Уникальнеый ключ</param>
         /// <returns>Код 200 если удаление прошло успешно, код 404 если не найдена задача по id, код 500 если случилась ошибка сервера</returns>
         [HttpDelete("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Division), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]

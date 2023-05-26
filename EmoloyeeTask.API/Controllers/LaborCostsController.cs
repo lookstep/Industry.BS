@@ -1,4 +1,5 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeTask.API.Controllers
@@ -24,6 +25,7 @@ namespace EmployeeTask.API.Controllers
         /// </summary>
         /// <returns>список данных о трудозатратах</returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<LaborCost>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<LaborCost>>> GetLaborCosts()
@@ -43,6 +45,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">уникальный ключ</param>
         /// <returns>сотрудника с данными о трудозатратах по id</returns>
         [HttpGet("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(LaborCost), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
@@ -67,6 +70,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="laborCosts">Новые данные о трудозатратах</param>
         /// <returns>Создание новых данных о трудозатратах и последующая переадресация по нужному URI</returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(typeof(LaborCost), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
@@ -94,6 +98,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="laborCosts">Видоизменённые данные о трудозатратах</param>
         /// <returns>Обновленные данные о трудозатратах</returns>
         [HttpPut("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(LaborCost), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -123,6 +128,7 @@ namespace EmployeeTask.API.Controllers
         /// 404 если данных о трудозатратах с нужным id нет, 
         /// 500 - ошибка сервера при удалении данных о трудозатратах</returns>
         [HttpDelete("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(LaborCost), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]

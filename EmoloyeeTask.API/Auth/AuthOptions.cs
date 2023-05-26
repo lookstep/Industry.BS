@@ -6,8 +6,8 @@ namespace EmoloyeeTask.API.Auth
     internal static class AuthOptions
     {
         internal const int TTL = 1;
-        internal const string Issuer = "MyIssuer";
-        internal const string Audience = "MyServer";
+        internal const string Issuer = "Industry.BS";
+        internal const string Audience = "Industry.IOSApp";
 
         internal static SecurityKey PublicKey = GetPublicKey();
         internal static SecurityKey PrivateKey = GetPrivateKey();

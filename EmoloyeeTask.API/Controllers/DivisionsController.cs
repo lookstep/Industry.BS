@@ -1,5 +1,7 @@
-﻿using EmoloyeeTask.Data.Interfaces;
+﻿using EmoloyeeTask.API.Auth;
+using EmoloyeeTask.Data.Interfaces;
 using EmployeeTask.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeTask.API.Controllers
@@ -25,6 +27,7 @@ namespace EmployeeTask.API.Controllers
         /// </summary>
         /// <returns>Список подразделений</returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<Project>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<Division>>> Divisions()
@@ -96,6 +99,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="division">Подразделение, данные о котором мы хотим изменить</param>
         /// <returns>Обновленное подразделение</returns>
         [HttpPut("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Division), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -123,6 +127,7 @@ namespace EmployeeTask.API.Controllers
         /// <param name="id">Уникальнеый ключ</param>
         /// <returns>Код 200 если удаление прошло успешно, код 404 если не найдено подразделение по id, код 500 если случилась ошибка сервера</returns>
         [HttpDelete("{id:int}")]
+        [Authorize]
         [ProducesResponseType(typeof(Division), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]

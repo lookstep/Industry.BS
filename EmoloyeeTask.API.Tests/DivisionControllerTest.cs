@@ -22,7 +22,7 @@ namespace EmoloyeeTask.API.Tests
 
             //act
             var result = divisionController.Divisions().GetAwaiter().GetResult();
-            
+
             //assert
             Assert.NotNull(result);
             Assert.NotNull(result.Result);

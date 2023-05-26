@@ -82,6 +82,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     x => x.MigrationsAssembly("EmoloyeeTask.Data.Migrations"));
 });
 
+
 builder.Services.AddScoped<IDbRepository<Employee>, EmployeeRepository>();
 builder.Services.AddScoped<IDbRepository<Division>, DivisionRepository>();
 builder.Services.AddScoped<IDbRepository<Project>, ProjectRepository>();
@@ -104,9 +105,14 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<JwtAuthMiddleware>();
 
+app.Run();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
