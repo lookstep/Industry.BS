@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.AspNetCore.Http;
+using System.Text.Json.Serialization;
 
 namespace EmployeeTask.Shared
 {
@@ -29,7 +30,6 @@ namespace EmployeeTask.Shared
         /// Роль
         /// </summary>
         public string Role { get; set; }
-
         /// <summary>
         /// Почтовый адресс
         /// </summary>
@@ -77,4 +77,5 @@ namespace EmployeeTask.Shared
         /// </summary>
         public virtual IEnumerable<LaborCost>? LaborCosts { get; set; }
     }
+
 }

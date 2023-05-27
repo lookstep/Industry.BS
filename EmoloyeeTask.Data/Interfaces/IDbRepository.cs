@@ -1,6 +1,6 @@
 ﻿namespace EmoloyeeTask.Data.Interfaces
 {
-    public interface IDbRepository<T> where T : class, IEntity
+    public interface IDbRepository<T> : IFileWorkRepository<T> where T : class, IEntity
     {
         Task<T> Add(T NewEntity);    
         Task<T> Get(int id);

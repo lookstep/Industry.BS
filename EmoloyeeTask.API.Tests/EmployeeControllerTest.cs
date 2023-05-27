@@ -63,7 +63,7 @@ namespace EmoloyeeTask.API.Tests
             var createdEmployee = new Employee() { FirstName = randFirstName, SecondName = randSecondName, DivisionId = 1 };
             //act
 
-            var result = employeeController.AddEmployee(employee: createdEmployee).GetAwaiter().GetResult();
+            var result = employeeController.AddEmployee(employee: createdEmployee, null).GetAwaiter().GetResult();
 
             //assert
             Assert.NotNull(result);
@@ -203,7 +203,7 @@ namespace EmoloyeeTask.API.Tests
             EmployeesController employeeController = new EmployeesController(mock.Object);
 
             //act
-            var result = employeeController.AddEmployee(employee: createdEmployee).GetAwaiter().GetResult();
+            var result = employeeController.AddEmployee(employee: createdEmployee, null).GetAwaiter().GetResult();
 
             //assert
             Assert.NotNull(result);
@@ -222,7 +222,7 @@ namespace EmoloyeeTask.API.Tests
             EmployeesController employeeController = new EmployeesController(mock.Object);
 
             //act
-            var result = employeeController.AddEmployee(employee: null!).GetAwaiter().GetResult();
+            var result = employeeController.AddEmployee(employee: null!, null).GetAwaiter().GetResult();
 
             //assert
             Assert.NotNull(result);

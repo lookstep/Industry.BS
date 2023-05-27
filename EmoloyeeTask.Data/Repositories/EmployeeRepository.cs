@@ -1,5 +1,6 @@
 ﻿using EmoloyeeTask.Data;
 using EmoloyeeTask.Data.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,11 +28,50 @@ namespace EmployeeTask.Data.Repositories
             return result.Entity;
         }
 
+        public override async Task<Employee> AddWithFile(Employee employee, IFormFile file)
+        {
+            if (file != null)
+            {
+                // Check file size
+                if (file.Length > 1 * 1024 * 1024) // 1 MB
+                    throw new Exception("File is too large.");
+
+                // Check file type
+                var supportedTypes = new[] { "jpg", "jpeg", "png" };
+                var fileExt = Path.GetExtension(file.FileName).Substring(1);
+                if (!supportedTypes.Contains(fileExt))
+                    throw new Exception("Invalid file type.");
+
+                // Check file content
+                try
+                {
+                    using var image = Image.Load(file.OpenReadStream());
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Invalid image content.");
+                }
+
+                var path = Path.Combine(
+                            Directory.GetCurrentDirectory(), "storage/PersonalAccount",
+                            $"{employee.FirstName}personalPhoto_{Guid.NewGuid()}");
+
+                using var stream = new FileStream(path, FileMode.Create);
+                await file.CopyToAsync(stream);
+
+                employee.IconPath = path;
+            }
+
+            return await Add(employee);
+        }
+
+
+
         public override async Task Delete(int id)
         {
             var result = await _db.Employees
                                   .FirstOrDefaultAsync(x => x.Id == id);
-            if(result != null)
+            if (result != null)
             {
                 _db.Remove(result);
                 await _db.SaveChangesAsync();

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace EmoloyeeTask.Data.Interfaces
             var result = await _db.Set<T>().AddAsync(NewEntity);
             await _db.SaveChangesAsync();
             return result.Entity;
+        }
+
+        public virtual Task<T> AddWithFile(T entity, IFormFile file)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual async Task Delete(int id)
