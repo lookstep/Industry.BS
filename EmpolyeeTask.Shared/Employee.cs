@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 namespace EmployeeTask.Shared
 {
+    [Index("Email", IsUnique = true)]
     public class Employee : IEntity
     {
 #nullable disable
@@ -33,6 +35,9 @@ namespace EmployeeTask.Shared
         /// <summary>
         /// Почтовый адресс
         /// </summary>
+        [Required]
+        [EmailAddress(ErrorMessage = "Нерпавельный email адресс")]
+        
         public string Email { get; set; }
         /// <summary>
         /// Вторичный ключ подразделения
@@ -48,10 +53,6 @@ namespace EmployeeTask.Shared
         /// Картинка профиля
         /// </summary>
         public string? IconPath { get; set; }
-        /// <summary>
-        /// Буфер для нового пароля
-        /// </summary>
-        public string? NewPassword { get; set; }
         /// <summary>
         /// Табельный номер
         /// </summary>

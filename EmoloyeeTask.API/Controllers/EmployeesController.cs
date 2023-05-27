@@ -1,11 +1,13 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
+using EmployeeTask.Shared.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeTask.API.Controllers
-{ 
+{
+
     /// <summary>
     /// Контроллер API и операций CRUD для сотрудников
     /// </summary>
@@ -39,7 +41,7 @@ namespace EmployeeTask.API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось получить информацию с сервера");
             }
-            
+
         }
         /// <summary>
         /// Получение конкретного сотрудника по id
@@ -68,25 +70,39 @@ namespace EmployeeTask.API.Controllers
         /// <summary>
         /// Добавление сотрудника
         /// </summary>
-        /// <param name="employee">Новый сотрудник</param>
+        /// <param name="employeeDTO">Дто сотрудника</param>
         /// <returns>Создание нового сотрудника и последующая переадресация по нужному URI</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Employee>> AddEmployee(Employee employee)
+        public async Task<ActionResult<Employee>> AddEmployee([FromForm]EmployeeDto employeeDTO)
         {
             try
             {
-                if (employee == null)
+                if (employeeDTO == null)
                     return BadRequest("Данные о сотруднике не заполненны пустое или некорректно введены");
 
-                // Создайте экземпляр PasswordHasher
-                var hasher = new PasswordHasher<Employee>();
-                // Хэшируйте пароль перед сохранением
-                employee.Password = hasher.HashPassword(employee, employee.Password);
+                var employee = new Employee()
+                {
+                    Id = employeeDTO.Id,
+                    FirstName = employeeDTO.FirstName,
+                    LastName = employeeDTO.LastName,
+                    SecondName = employeeDTO.SecondName,
+                    ServiceNumber = employeeDTO.ServiceNumber,
+                    Email = employeeDTO.Email,
+                    OneCPass = employeeDTO.OneCPass,
+                    Post = employeeDTO.Post,
+                    Password = employeeDTO.Password,
+                    Role = employeeDTO.Role,
+                    DivisionId = employeeDTO.DivisionId
+                };
 
-                var createEmployee = await _employeeRepository.Add(employee);
+                var hasher = new PasswordHasher<EmployeeDto>();
+
+                employee.Password = hasher.HashPassword(employeeDTO, employeeDTO.Password);
+
+                var createEmployee = await _employeeRepository.AddWithFile(employee, employeeDTO.File);
                 return CreatedAtAction(nameof(GetEmployee), new { id = createEmployee.Id }, createEmployee);
             }
             catch

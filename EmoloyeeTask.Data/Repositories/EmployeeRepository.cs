@@ -30,41 +30,48 @@ namespace EmployeeTask.Data.Repositories
 
         public override async Task<Employee> AddWithFile(Employee employee, IFormFile file)
         {
-            if (file != null)
+            if (file == null)
             {
-                // Check file size
-                if (file.Length > 1 * 1024 * 1024) // 1 MB
-                    throw new Exception("File is too large.");
+                var defaultImagePath = Path.Combine(Directory.GetCurrentDirectory(), "storage/PersonalAccount", "default-user.png");
 
-                // Check file type
-                var supportedTypes = new[] { "jpg", "jpeg", "png" };
-                var fileExt = Path.GetExtension(file.FileName).Substring(1);
-                if (!supportedTypes.Contains(fileExt))
-                    throw new Exception("Invalid file type.");
+                employee.IconPath = File.Exists(defaultImagePath)
+                    ? employee.IconPath = defaultImagePath
+                    : employee.IconPath = null;
+                    
+                return await Add(employee);
+            }
 
-                // Check file content
-                try
-                {
-                    using var image = Image.Load(file.OpenReadStream());
-                }
-                catch (Exception)
-                {
-                    throw new Exception("Invalid image content.");
-                }
+            // Check file size
+            if (file.Length > 1 * 1024 * 1024) // 1 MB
+                throw new Exception("File is too large.");
+
+            // Check file type
+            var fileExt = Path.GetExtension(file.FileName).Substring(1);
+            if (!IsSupportedFileType(fileExt))
+                throw new Exception("Invalid file type.");
+
+            // Check file content
+            try
+            {
+                using var image = SixLabors.ImageSharp.Image.Load(file.OpenReadStream());
 
                 var path = Path.Combine(
-                            Directory.GetCurrentDirectory(), "storage/PersonalAccount",
-                            $"{employee.FirstName}personalPhoto_{Guid.NewGuid()}");
+                           Directory.GetCurrentDirectory(),
+                           "storage/PersonalAccount",
+                           $"{employee.FirstName}_personalPhoto_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}");
 
                 using var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream);
 
                 employee.IconPath = path;
+
+                return await Add(employee);
             }
-
-            return await Add(employee);
+            catch (Exception)
+            {
+                throw new Exception("Invalid image content.");
+            }
         }
-
 
 
         public override async Task Delete(int id)
@@ -111,11 +118,10 @@ namespace EmployeeTask.Data.Repositories
                 result.LaborCosts = employee.LaborCosts;
                 result.IconPath = employee.IconPath;
 
-                if (!string.IsNullOrEmpty(employee.NewPassword))
+                if (!result.Password.Equals(employee.Password))
                 {
                     var hasher = new PasswordHasher<Employee>();
-                    employee.NewPassword = hasher.HashPassword(employee, employee.NewPassword);
-                    result.Password = employee.NewPassword;
+                    result.Password = hasher.HashPassword(employee, employee.Password);
                 }
 
                 await _db.SaveChangesAsync();
@@ -125,5 +131,10 @@ namespace EmployeeTask.Data.Repositories
             return null!;
         }
 
+        private static bool IsSupportedFileType(string fileExtension)
+        {
+            var supportedTypes = new[] { "jpg", "jpeg", "png" };
+            return supportedTypes.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
+        }
     }
 }

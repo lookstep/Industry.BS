@@ -1,5 +1,6 @@
 ﻿using EmoloyeeTask.API.Auth;
 using EmoloyeeTask.Data.Interfaces;
+using EmployeeTask.Shared.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,28 +27,33 @@ namespace EmoloyeeTask.API.Controllers
         /// <summary>
         /// Отправка JWT токена
         /// </summary>
-        /// <param name="employeeModle">Сотрудник</param>
+        /// <param name="employeeModel">Сотрудник</param>
         /// <returns>Декодированный токен ключ</returns>
         [HttpPost("token")]
-        public ActionResult Token([FromBody] Employee employeeModel)
+        public ActionResult Token([FromBody] EmployeeDto employeeModel)
         {
-            var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.Id == employeeModel.Id);
+            try
+            {
+                var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.Email == employeeModel.Email);
 
-            if (employee == null)
-                return BadRequest("Пользователь не найден");
+                if (employee == null)
+                    return BadRequest("Пользователь не найден");
 
-            // Создайте экземпляр PasswordHasher
-            var hasher = new PasswordHasher<Employee>();
-            // Проверьте хэш пароля
+                var hasher = new PasswordHasher<Employee>();
 
-            var verifyResult = hasher.VerifyHashedPassword(employee, employee.Password, employeeModel.Password);
+                var verifyResult = hasher.VerifyHashedPassword(employee, employee.Password, employeeModel.Password);
 
-            if (verifyResult == PasswordVerificationResult.Failed)
-                return BadRequest("Неверный пароль");
+                if (verifyResult == PasswordVerificationResult.Failed)
+                    return BadRequest("Неверный пароль");
 
-            var token = GetJwt(employee);
-            var decode = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            return Ok(token);
+                var token = GetJwt(employee);
+                var decode = new JwtSecurityTokenHandler().ReadJwtToken(token);
+                return Ok(token);
+            }
+            catch
+            {
+                return BadRequest("Ну удалось авторизироваться (неправельный логин или пароль)");
+            }
         }
 
         private string GetJwt(Employee employee)

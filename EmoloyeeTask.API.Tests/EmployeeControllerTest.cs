@@ -1,6 +1,7 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
 using EmployeeTask.API.Controllers;
 using EmployeeTask.Shared;
+using EmployeeTask.Shared.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -60,10 +61,10 @@ namespace EmoloyeeTask.API.Tests
 
             var randFirstName = Guid.NewGuid().ToString();
             var randSecondName = Guid.NewGuid().ToString();
-            var createdEmployee = new Employee() { FirstName = randFirstName, SecondName = randSecondName, DivisionId = 1 };
+            var createdEmployee = new EmployeeDto() { FirstName = randFirstName, SecondName = randSecondName, DivisionId = 1 };
             //act
 
-            var result = employeeController.AddEmployee(employee: createdEmployee, null).GetAwaiter().GetResult();
+            var result = employeeController.AddEmployee(employeeDTO: createdEmployee).GetAwaiter().GetResult();
 
             //assert
             Assert.NotNull(result);
@@ -195,15 +196,15 @@ namespace EmoloyeeTask.API.Tests
         {
             //arrange
             var randName = Guid.NewGuid().ToString();
-            var createdEmployee = new Employee() { FirstName = randName };
-
+            var createdEmployee = new EmployeeDto() { FirstName = randName };
+            var employee = new Employee() { FirstName = createdEmployee.FirstName };
             Mock<IDbRepository<Employee>> mock = new Mock<IDbRepository<Employee>>();
-            mock.Setup(x => x.Add(createdEmployee)).ReturnsAsync(createdEmployee);
+            mock.Setup(x => x.Add(employee)).ReturnsAsync(employee);
 
             EmployeesController employeeController = new EmployeesController(mock.Object);
 
             //act
-            var result = employeeController.AddEmployee(employee: createdEmployee, null).GetAwaiter().GetResult();
+            var result = employeeController.AddEmployee(createdEmployee).GetAwaiter().GetResult();
 
             //assert
             Assert.NotNull(result);
@@ -222,7 +223,7 @@ namespace EmoloyeeTask.API.Tests
             EmployeesController employeeController = new EmployeesController(mock.Object);
 
             //act
-            var result = employeeController.AddEmployee(employee: null!, null).GetAwaiter().GetResult();
+            var result = employeeController.AddEmployee(employeeDTO: null!).GetAwaiter().GetResult();
 
             //assert
             Assert.NotNull(result);
