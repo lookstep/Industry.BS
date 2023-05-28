@@ -59,7 +59,10 @@ namespace EmployeeTask.API.Controllers
                 var result = await _employeeRepository.Get(id);
                 if (result == null)
                     return NotFound("Не удалось найти сотрудника по данному id");
-                else return Ok(result);
+                else
+                {
+                    return Ok(result);
+                }
             }
             catch
             {

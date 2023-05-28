@@ -10,26 +10,34 @@ using System.Security.Claims;
 
 namespace EmoloyeeTask.API.Controllers
 {
+    /// <summary>
+    /// Аутентификация
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IDbRepository<Employee> _employeeRepository;
+        private readonly IMailSender _mailSender;
+
         /// <summary>
-        /// Внедрение зависимости интерфейса для работе с сотдрудником
+        /// Конструктро для заполнения сервисов
         /// </summary>
-        /// <param name="employeeRepository">зависимость</param>
-        public AuthController(IDbRepository<Employee> employeeRepository)
+        /// <param name="employeeRepository">сотрудники</param>
+        /// <param name="mailSender">почта</param>
+        public AuthController(IDbRepository<Employee> employeeRepository, IMailSender mailSender)
         {
             _employeeRepository = employeeRepository;
+            _mailSender = mailSender;
         }
 
         /// <summary>
-        /// Отправка JWT токена
+        /// Получение токена
         /// </summary>
-        /// <param name="employeeModel">Сотрудник</param>
-        /// <returns>Декодированный токен ключ</returns>
-        [HttpPost("token")]
+        /// <param name="employeeModel">Дто сотруднка</param>
+        /// <returns>jwt токен</returns>
+        [HttpPost]
+        [Route("/token")]
         public ActionResult Token([FromBody] EmployeeDto employeeModel)
         {
             try
@@ -53,6 +61,68 @@ namespace EmoloyeeTask.API.Controllers
             catch
             {
                 return BadRequest("Ну удалось авторизироваться (неправельный логин или пароль)");
+            }
+        }
+
+        /// <summary>
+        /// Отправка кода для востановления пароля
+        /// </summary>
+        /// <param name="request">Емайл пользователя</param>
+        /// <returns>Отправленное по почте письмо</returns>
+        [HttpPost]
+        [Route("/reset-password")]
+        public async Task<ActionResult> ResetPassword([FromBody]ResetPasswordRequestDTO request)
+        {
+            try
+            {
+
+
+                var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.Email == request.Email);
+                if (employee == null)
+                    return BadRequest("Пользователь с таким адресом электронной почты не найден");
+
+                var confirmationCode = GenerateConfirmationCode();
+
+                employee.ConfirmationCode = confirmationCode;
+                await _employeeRepository.Update(employee);
+
+                await _mailSender.SendMailMessageAsync(employee.Email, confirmationCode);
+
+                return Ok("На вашу почту отправлено сообщение");
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось отправить письмо на электронную почту. Проверьте адресс");
+            }
+        }
+
+        /// <summary>
+        /// Востановление пароля
+        /// </summary>
+        /// <param name="request">Код подтверждения и пароль</param>
+        /// <returns>Измененный пароль</returns>
+        [HttpPost]
+        [Route("/confirm-reset-password")]
+        public async Task<ActionResult> ConfirmResetPassword([FromBody]ConfirmResetPasswordRequestDTO request)
+        {
+            try
+            {
+                var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.ConfirmationCode == request.ConfirmationCode);
+                if (employee == null)
+                    return BadRequest("Неверный код подтверждения");
+
+                var hasher = new PasswordHasher<Employee>();
+                var hashedPassword = hasher.HashPassword(employee, request.NewPassword);
+
+                employee.Password = hashedPassword;
+                employee.ConfirmationCode = null;
+                await _employeeRepository.Update(employee);
+
+                return Ok("Ваш пароль был изменён.");
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось обновить пароль.");
             }
         }
 
@@ -84,7 +154,12 @@ namespace EmoloyeeTask.API.Controllers
             };
             return claims;
         }
-        
-        
+        private string GenerateConfirmationCode()
+        {
+            var random = new Random();
+            var code = random.Next(100000, 999999).ToString();
+            return code;
+        }
+
     }
 }

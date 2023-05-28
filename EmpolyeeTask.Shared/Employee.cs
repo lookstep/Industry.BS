@@ -50,6 +50,10 @@ namespace EmployeeTask.Shared
         public string? LastName { get; set; }
 
         /// <summary>
+        /// Код подтверждения
+        /// </summary>
+        public string? ConfirmationCode { get; set; }
+        /// <summary>
         /// Картинка профиля
         /// </summary>
         public string? IconPath { get; set; }

@@ -1,8 +1,13 @@
-﻿using EmoloyeeTask.API.Auth;
+﻿using Castle.Core.Smtp;
+using EmoloyeeTask.API.Auth;
 using EmoloyeeTask.Data.Interfaces;
 using EmployeeTask.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using MimeKit.Utils;
+using System.Net;
+using System.Net.Mail;
 
 namespace EmployeeTask.API.Controllers
 {
@@ -84,6 +89,7 @@ namespace EmployeeTask.API.Controllers
                     return BadRequest("Подразделение пустое или некорректно добавлены данные");
 
                 var createdDivision = await _divisionRepository.Add(division);
+
 
                 return CreatedAtAction(nameof(GetDivision), new { id = createdDivision.Id }, createdDivision);
             }

@@ -21,6 +21,7 @@ namespace EmoloyeeTask.API.Auth
             key.ImportRSAPublicKey(source: Convert.FromBase64String(PublicKeyString), bytesRead: out _);
             return new RsaSecurityKey(key);
         }
+
         private static SecurityKey GetPrivateKey()
         {
             var key = RSA.Create();

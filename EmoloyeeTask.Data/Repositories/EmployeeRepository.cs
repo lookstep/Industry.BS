@@ -117,6 +117,7 @@ namespace EmployeeTask.Data.Repositories
                 result.DivisionId = employee.DivisionId;
                 result.LaborCosts = employee.LaborCosts;
                 result.IconPath = employee.IconPath;
+                result.ConfirmationCode = employee.ConfirmationCode;
 
                 if (!result.Password.Equals(employee.Password))
                 {

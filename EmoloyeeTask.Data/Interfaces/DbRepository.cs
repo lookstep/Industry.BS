@@ -1,11 +1,5 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmoloyeeTask.Data.Interfaces
 {
@@ -26,7 +20,7 @@ namespace EmoloyeeTask.Data.Interfaces
 
         public virtual Task<T> AddWithFile(T entity, IFormFile file)
         {
-            throw new NotImplementedException();
+            return Add(entity);
         }
 
         public virtual async Task Delete(int id)
