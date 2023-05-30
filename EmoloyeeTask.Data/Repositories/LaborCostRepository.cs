@@ -67,28 +67,16 @@ namespace EmployeeTask.Data.Repositories
             {
                 result.Date = laborCosts.Date;
                 result.HourCount = laborCosts.HourCount;
-                if (laborCosts.IssueId != 0)
-                {
-                    result.IssueId = laborCosts.IssueId;
-                }
-                else if (laborCosts.Employee != null)
-                {
-                    result.IssueId = laborCosts.Issue.Id;
-                }
-                if (laborCosts.EmployeeId != 0)
-                {
-                    result.EmployeeId = laborCosts.EmployeeId;
-                }
-                else if(laborCosts.Employee != null)
-                {
-                    result.EmployeeId = laborCosts.Employee.Id;
-                }
-     
+
                 await _db.SaveChangesAsync();
 
                 return result;
             }
             return null!;
+        }
+        public async Task Save()
+        {
+            await _db.SaveChangesAsync();
         }
     }
 }

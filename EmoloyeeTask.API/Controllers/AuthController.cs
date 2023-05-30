@@ -36,8 +36,7 @@ namespace EmoloyeeTask.API.Controllers
         /// </summary>
         /// <param name="employeeModel">Дто сотруднка</param>
         /// <returns>jwt токен</returns>
-        [HttpPost]
-        [Route("/token")]
+        [HttpPost("token")]
         public ActionResult Token([FromBody] EmployeeDto employeeModel)
         {
             try
@@ -75,8 +74,6 @@ namespace EmoloyeeTask.API.Controllers
         {
             try
             {
-
-
                 var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.Email == request.Email);
                 if (employee == null)
                     return BadRequest("Пользователь с таким адресом электронной почты не найден");

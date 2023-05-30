@@ -67,7 +67,6 @@ namespace EmployeeTask.Data.Repositories
                 {
                     result.ProjectId = taskForEmployee.Project.Id;
                 }
-                result.LaborCosts = taskForEmployee.LaborCosts;
 
                 await _db.SaveChangesAsync();
 
