@@ -18,7 +18,7 @@ public class EmailSender : IMailSender
 
         var bodyBuilder = new BodyBuilder();
 
-        var image = bodyBuilder.LinkedResources.Add(@"storage\PersonalAccount\company-logo.jpg");
+        var image = bodyBuilder.LinkedResources.Add(@"storage/PersonalAccount/company-logo.jpg");
 
         image.ContentId = MimeUtils.GenerateMessageId();
 

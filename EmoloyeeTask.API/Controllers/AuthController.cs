@@ -19,16 +19,18 @@ namespace EmoloyeeTask.API.Controllers
     {
         private readonly IDbRepository<Employee> _employeeRepository;
         private readonly IMailSender _mailSender;
+        private readonly ILogger<AuthController> _logger;
 
         /// <summary>
         /// Конструктро для заполнения сервисов
         /// </summary>
         /// <param name="employeeRepository">сотрудники</param>
         /// <param name="mailSender">почта</param>
-        public AuthController(IDbRepository<Employee> employeeRepository, IMailSender mailSender)
+        public AuthController(IDbRepository<Employee> employeeRepository, IMailSender mailSender, ILogger<AuthController> logger)
         {
             _employeeRepository = employeeRepository;
             _mailSender = mailSender;
+            _logger = logger;
         }
 
         /// <summary>
@@ -68,8 +70,7 @@ namespace EmoloyeeTask.API.Controllers
         /// </summary>
         /// <param name="request">Емайл пользователя</param>
         /// <returns>Отправленное по почте письмо</returns>
-        [HttpPost]
-        [Route("/reset-password")]
+        [HttpPost("reset-password")]
         public async Task<ActionResult> ResetPassword([FromBody]ResetPasswordRequestDTO request)
         {
             try
@@ -87,8 +88,9 @@ namespace EmoloyeeTask.API.Controllers
 
                 return Ok("На вашу почту отправлено сообщение");
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось отправить письмо на электронную почту. Проверьте адресс");
             }
         }
@@ -98,14 +100,17 @@ namespace EmoloyeeTask.API.Controllers
         /// </summary>
         /// <param name="request">Код подтверждения и пароль</param>
         /// <returns>Измененный пароль</returns>
-        [HttpPost]
-        [Route("/confirm-reset-password")]
+        [HttpPost("confirm-reset-password")]
         public async Task<ActionResult> ConfirmResetPassword([FromBody]ConfirmResetPasswordRequestDTO request)
         {
             try
-            {
+            {       
+                if (string.IsNullOrWhiteSpace(request.NewPassword))
+                    return BadRequest("Вы не ввели пароль");
+
                 var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.ConfirmationCode == request.ConfirmationCode);
-                if (employee == null)
+
+                if(employee == null)
                     return BadRequest("Неверный код подтверждения");
 
                 var hasher = new PasswordHasher<Employee>();
@@ -120,6 +125,28 @@ namespace EmoloyeeTask.API.Controllers
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось обновить пароль.");
+            }
+        }
+
+        /// <summary>
+        /// Проверяет код с почты
+        /// </summary>
+        /// <returns>true : если код валидный, false: не валидный</returns>
+        [HttpPost("cheak-valid-confirmation-code")]
+        public async Task<ActionResult<bool>> CheakValidConfirmationCode([FromBody] ConfirmResetPasswordRequestDTO request)
+        {
+            try
+            {
+                var employee = _employeeRepository.GetAll().Result.FirstOrDefault(x => x.ConfirmationCode == request.ConfirmationCode);
+
+                if (employee == null)
+                    return Ok(false);
+
+                return Ok(true);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Не удалось проверить код подтверждения.");
             }
         }
 
