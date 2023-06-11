@@ -17,7 +17,7 @@ namespace EmployeeTask.Data.Repositories
             {
                 _db.Entry(taskForEmployee.Project).State = EntityState.Unchanged;
             }
-            var result = await _db.Assignments.AddAsync(taskForEmployee);
+            var result = await _db.Issues.AddAsync(taskForEmployee);
 
             await _db.SaveChangesAsync();
 
@@ -26,7 +26,7 @@ namespace EmployeeTask.Data.Repositories
 
         public override async Task Delete(int id)
         {
-            var result = await _db.Assignments.FirstOrDefaultAsync(x => x.Id == id);
+            var result = await _db.Issues.FirstOrDefaultAsync(x => x.Id == id);
 
             if(result != null)
             {
@@ -37,7 +37,7 @@ namespace EmployeeTask.Data.Repositories
         }
         public override async Task<Issue> Get(int id)
         {
-            return await _db.Assignments
+            return await _db.Issues
                             .Include(x => x.LaborCosts)
                             .Include(x => x.Project)
                             .FirstOrDefaultAsync(t => t.Id == id);
@@ -45,7 +45,7 @@ namespace EmployeeTask.Data.Repositories
 
         public override async Task<IEnumerable<Issue>> GetAll()
         {
-            return await _db.Assignments
+            return await _db.Issues
                             .Include(x => x.LaborCosts)
                             .Include(x => x.Project)
                             .ToListAsync();
@@ -53,7 +53,7 @@ namespace EmployeeTask.Data.Repositories
 
         public override async Task<Issue> Update(Issue taskForEmployee)
         {
-            var result = await _db.Assignments.FirstOrDefaultAsync(x => x.Id == taskForEmployee.Id);
+            var result = await _db.Issues.FirstOrDefaultAsync(x => x.Id == taskForEmployee.Id);
 
             if(result != null)
             {

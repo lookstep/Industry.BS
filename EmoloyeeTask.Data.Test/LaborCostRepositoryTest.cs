@@ -28,7 +28,7 @@ namespace EmoloyeeTask.Data.Test
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
@@ -61,7 +61,7 @@ namespace EmoloyeeTask.Data.Test
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
@@ -94,7 +94,7 @@ namespace EmoloyeeTask.Data.Test
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
@@ -130,7 +130,7 @@ namespace EmoloyeeTask.Data.Test
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
@@ -162,7 +162,7 @@ namespace EmoloyeeTask.Data.Test
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 

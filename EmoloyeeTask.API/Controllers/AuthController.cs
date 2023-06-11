@@ -26,7 +26,9 @@ namespace EmoloyeeTask.API.Controllers
         /// </summary>
         /// <param name="employeeRepository">сотрудники</param>
         /// <param name="mailSender">почта</param>
-        public AuthController(IDbRepository<Employee> employeeRepository, IMailSender mailSender, ILogger<AuthController> logger)
+        public AuthController(IDbRepository<Employee> employeeRepository, 
+            IMailSender mailSender, 
+            ILogger<AuthController> logger)
         {
             _employeeRepository = employeeRepository;
             _mailSender = mailSender;
@@ -174,7 +176,8 @@ namespace EmoloyeeTask.API.Controllers
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, employee.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
+                new Claim(ClaimTypes.Role, employee.Role)
             };
             return claims;
         }

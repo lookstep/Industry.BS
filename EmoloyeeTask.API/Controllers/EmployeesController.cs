@@ -29,6 +29,7 @@ namespace EmployeeTask.API.Controllers
         /// </summary>
         /// <returns>список сотрудников</returns>
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(IEnumerable<Employee>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()

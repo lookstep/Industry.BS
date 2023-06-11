@@ -4,6 +4,7 @@ using EmoloyeeTask.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmoloyeeTask.Data.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230610115114_AddDeviceCode")]
+    partial class AddDeviceCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace EmoloyeeTask.Data.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AllowedDeviceCode");
+                    b.ToTable("AllowedIPs");
                 });
 
             modelBuilder.Entity("EmployeeTask.Shared.Division", b =>
@@ -171,7 +173,7 @@ namespace EmoloyeeTask.Data.Migrations.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Issues");
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("EmployeeTask.Shared.LaborCost", b =>

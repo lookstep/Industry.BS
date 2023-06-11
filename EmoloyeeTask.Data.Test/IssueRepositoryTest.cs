@@ -32,7 +32,7 @@ namespace EmoloyeeTask.Data.Test
                new Project { Id = 1, ProjectName = "SpaceZXC" },
                new Project { Id = 2, ProjectName = "Justif_X" });
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1},
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2}
                 );
@@ -60,7 +60,7 @@ namespace EmoloyeeTask.Data.Test
                 new Project { Id = 1, ProjectName = "SpaceZXC" },
                 new Project { Id = 2, ProjectName = "Justif_X" });
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 }
                 );
@@ -91,7 +91,7 @@ namespace EmoloyeeTask.Data.Test
             var addedAssignment = new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 };
             var taskName = addedAssignment.TaskName;
 
-            _context.Assignments.Add(addedAssignment);
+            _context.Issues.Add(addedAssignment);
 
             _context.SaveChanges();
 
@@ -130,7 +130,7 @@ namespace EmoloyeeTask.Data.Test
 
             //assert
             Assert.NotNull(result);
-            Assert.NotNull(_context.Assignments.FirstOrDefault(x => x.TaskName == "Сделать красиво"));
+            Assert.NotNull(_context.Issues.FirstOrDefault(x => x.TaskName == "Сделать красиво"));
             Assert.Equal(addedAssignment.Id, result.Id);
         }
         [Fact]
@@ -145,7 +145,7 @@ namespace EmoloyeeTask.Data.Test
                 new Project { Id = 1, ProjectName = "SpaceZXC" },
                 new Project { Id = 2, ProjectName = "Justif_X" });
 
-            _context.Assignments.AddRange(
+            _context.Issues.AddRange(
                 new Issue() { Id = 1, TaskName = "Сделать красиво", ProjectId = 1 },
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 },
                 new Issue() { Id = 3, TaskName = "Сделать замечательно", ProjectId = 2 }
@@ -155,14 +155,14 @@ namespace EmoloyeeTask.Data.Test
 
             var repository = new IssueRepository(_context);
 
-            var deletedAssignment = _context.Assignments.FirstOrDefault(x => x.Id == 3);
+            var deletedAssignment = _context.Issues.FirstOrDefault(x => x.Id == 3);
 
             //act
             repository.Delete(id: 3).GetAwaiter().GetResult();
 
             //assert
             Assert.Null(_context.Divisions.FirstOrDefault(x => x.Id == 3));
-            Assert.DoesNotContain(deletedAssignment, _context.Assignments);
+            Assert.DoesNotContain(deletedAssignment, _context.Issues);
         }
     }
 }

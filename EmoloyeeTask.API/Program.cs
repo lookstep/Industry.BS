@@ -2,6 +2,7 @@ using EmoloyeeTask.API.Auth;
 using EmoloyeeTask.Data;
 using EmoloyeeTask.Data.Interfaces;
 using EmoloyeeTask.Data.Repositories;
+using EmoloyeeTask.Data.Services;
 using EmployeeTask.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     x => x.MigrationsAssembly("EmoloyeeTask.Data.Migrations"));
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy", builder =>
+    {
+        builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+}
+);
+
+builder.Services.AddScoped<DeviceCodeService>();
+builder.Services.AddScoped<CachedDeviceCodeService>();
 
 builder.Services.AddScoped<IDbRepository<Employee>, EmployeeRepository>();
 builder.Services.AddScoped<IDbRepository<Division>, DivisionRepository>();
@@ -90,7 +105,10 @@ builder.Services.AddScoped<IDbRepository<Issue>, IssueRepository>();
 builder.Services.AddScoped<IDbRepository<LaborCost>, LaborCostRepository>();
 builder.Services.AddScoped<IDbRepository<Document>, DocumentRepository>();
 
+
 builder.Services.AddTransient<IMailSender, EmailSender>();
+
+builder.Services.AddMemoryCache();
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -99,18 +117,19 @@ builder.Services.AddControllersWithViews().AddNewtonsoftJson(options =>
 var app = builder.Build();
 
 
+app.UseForwardedHeaders();
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseCors("MyPolicy");
 
 //app.UseHttpsRedirection();
-app.UseAuthorization();
 
 app.MapControllers();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<DeviceCodeCheckMiddleware>();
 app.UseMiddleware<JwtAuthMiddleware>();
 
 app.Run();

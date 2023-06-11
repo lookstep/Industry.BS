@@ -15,7 +15,10 @@ namespace EmoloyeeTask.API.Auth
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Path.Equals("/api/Auth/token", StringComparison.OrdinalIgnoreCase))
+            if (context.Request.Path.Equals("/api/Auth/token", StringComparison.OrdinalIgnoreCase)
+               || ((context.Request.Path.Equals("/api/Employees", StringComparison.OrdinalIgnoreCase) 
+               || context.Request.Path.Equals("/api/Divisions", StringComparison.OrdinalIgnoreCase)) 
+               && context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase)))
             {
                 await _next(context);
                 return;
@@ -38,18 +41,34 @@ namespace EmoloyeeTask.API.Auth
                     ValidateIssuer = true
                 };
 
-                tokenHeader.ValidateToken(token, validateParameters, out SecurityToken securityToken);
+                try
+                {
+                    tokenHeader.ValidateToken(token, validateParameters, out SecurityToken securityToken);
 
-                var jwtToken = (JwtSecurityToken)securityToken;
+                    var jwtToken = (JwtSecurityToken)securityToken;
 
-                // Создайте ClaimsIdentity из токена
-                var identity = new ClaimsIdentity(jwtToken.Claims, "Bearer");
-                // Создайте ClaimsPrincipal и установите его в контексте запроса
-                var principal = new ClaimsPrincipal(identity);
-                context.User = principal;
+                    // Создайте ClaimsIdentity из токена
+                    var identity = new ClaimsIdentity(jwtToken.Claims, "Bearer");
+                    // Создайте ClaimsPrincipal и установите его в контексте запроса
+                    var principal = new ClaimsPrincipal(identity);
+                    context.User = principal;
+
+                    await _next(context);
+                }
+                catch(Exception ex)
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync($"Ошибка: {ex.Message}");
+                    return;
+                }
+
             }
 
-            await _next(context);
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync("Отсутствует JWT токен");
+            return;
         }
     }
 }
