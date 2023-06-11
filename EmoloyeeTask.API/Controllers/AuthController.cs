@@ -26,7 +26,8 @@ namespace EmoloyeeTask.API.Controllers
         /// </summary>
         /// <param name="employeeRepository">сотрудники</param>
         /// <param name="mailSender">почта</param>
-        public AuthController(IDbRepository<Employee> employeeRepository, 
+        public AuthController(
+            IDbRepository<Employee> employeeRepository, 
             IMailSender mailSender, 
             ILogger<AuthController> logger)
         {

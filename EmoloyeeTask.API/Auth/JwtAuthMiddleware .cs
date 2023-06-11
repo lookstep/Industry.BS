@@ -16,6 +16,9 @@ namespace EmoloyeeTask.API.Auth
         public async Task InvokeAsync(HttpContext context)
         {
             if (context.Request.Path.Equals("/api/Auth/token", StringComparison.OrdinalIgnoreCase)
+               || context.Request.Path.Equals("/api/Auth/reset-password", StringComparison.OrdinalIgnoreCase) 
+               || context.Request.Path.Equals("/api/Auth/confirm-reset-password", StringComparison.OrdinalIgnoreCase)
+               || context.Request.Path.Equals("/api/Auth/cheak-valid-confirmation-code", StringComparison.OrdinalIgnoreCase)
                || ((context.Request.Path.Equals("/api/Employees", StringComparison.OrdinalIgnoreCase) 
                || context.Request.Path.Equals("/api/Divisions", StringComparison.OrdinalIgnoreCase)) 
                && context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase)))
