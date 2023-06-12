@@ -40,6 +40,11 @@ namespace EmoloyeeTask.Data.Interfaces
             return await _db.Set<T>().ToListAsync();
         }
 
+        public virtual async Task Save()
+        {
+            _db.SaveChangesAsync();
+        }
+
         public virtual async Task<T> Update(T Entity)
         {
             var updatedEntity = await _db.Set<T>().FirstOrDefaultAsync(x => x.Id == Entity.Id);

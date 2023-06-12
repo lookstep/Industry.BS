@@ -57,6 +57,7 @@ namespace EmoloyeeTask.API.Auth
                     context.User = principal;
 
                     await _next(context);
+                    return;
                 }
                 catch(Exception ex)
                 {

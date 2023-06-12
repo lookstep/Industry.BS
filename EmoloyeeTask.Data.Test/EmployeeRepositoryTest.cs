@@ -34,8 +34,8 @@ namespace EmoloyeeTask.Data.Test
                 new Division { Id = 2, DivisionName = "Отдел разработки" });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             _context.SaveChanges();
 
@@ -61,8 +61,8 @@ namespace EmoloyeeTask.Data.Test
                 new Division { Id = 2, DivisionName = "Отдел разработки" });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             _context.SaveChanges();
 
@@ -87,7 +87,7 @@ namespace EmoloyeeTask.Data.Test
                 new Division { Id = 1, DivisionName = "Общий отдел" },
                 new Division { Id = 2, DivisionName = "Отдел разработки" });
 
-            var addedEmployee = new Employee() { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 };
+            var addedEmployee = new Employee() { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email2@bk.ru", Password = "123", DivisionId = 1 };
             var firstName = addedEmployee.FirstName;
 
             _context.Employees.Add(addedEmployee);
@@ -96,7 +96,7 @@ namespace EmoloyeeTask.Data.Test
 
             var repository = new EmployeeRepository(_context);
 
-            var changedEmployee = new Employee() { Id = 1, FirstName = "Олег", SecondName = "Патько", DivisionId = 1 };
+            var changedEmployee = new Employee() { Id = 1, FirstName = "Олег", SecondName = "Патько", Email = "email1@bk.ru", Password = "321", DivisionId = 1 };
 
             //act
             var result = repository.Update(employee: changedEmployee).GetAwaiter().GetResult();
@@ -115,14 +115,14 @@ namespace EmoloyeeTask.Data.Test
             _context.Database.EnsureCreated();
 
             _context.Divisions.AddRange(
-                new Division { Id = 1, DivisionName = "Общий отдел" },
+                new Division { Id = 1, DivisionName = "Общий отдел", },
                 new Division { Id = 2, DivisionName = "Отдел разработки" });
 
             _context.SaveChanges();
 
             var repository = new EmployeeRepository(_context);
 
-            var addedEmployee = new Employee() { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 };
+            var addedEmployee = new Employee() { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email@bk.ru", DivisionId = 1 };
 
             //act
             var result = repository.Add(employee: addedEmployee).GetAwaiter().GetResult();
@@ -145,9 +145,9 @@ namespace EmoloyeeTask.Data.Test
                 new Division { Id = 2, DivisionName = "Отдел разработки" });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 },
-                new Employee { Id = 3, FirstName = "Жерёхин", SecondName = "Палыч", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email2@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email1@bk.ru", DivisionId = 2 },
+                new Employee { Id = 3, FirstName = "Жерёхин", SecondName = "Палыч", Email = "email@bk.ru", DivisionId = 2 });
 
             _context.SaveChanges();
 

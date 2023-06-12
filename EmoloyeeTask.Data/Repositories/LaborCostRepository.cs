@@ -74,9 +74,5 @@ namespace EmployeeTask.Data.Repositories
             }
             return null!;
         }
-        public async Task Save()
-        {
-            await _db.SaveChangesAsync();
-        }
     }
 }

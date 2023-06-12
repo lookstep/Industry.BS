@@ -33,8 +33,8 @@ namespace EmoloyeeTask.Data.Test
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             _context.LaborCosts.AddRange(
                 new LaborCost() { Id = 1, Date = System.DateTime.Now, IssueId = 1, EmployeeId = 1},
@@ -66,8 +66,8 @@ namespace EmoloyeeTask.Data.Test
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             _context.LaborCosts.AddRange(
                 new LaborCost() { Id = 1, Date = System.DateTime.Now, IssueId = 1, EmployeeId = 1 },
@@ -99,8 +99,8 @@ namespace EmoloyeeTask.Data.Test
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             var addedLaborCost = new LaborCost() { Id = 1, Date = System.DateTime.Now, IssueId = 1, EmployeeId = 1 };
             var laborCostDate = addedLaborCost.Date;
@@ -135,8 +135,8 @@ namespace EmoloyeeTask.Data.Test
                new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             _context.SaveChanges();
 
@@ -167,8 +167,8 @@ namespace EmoloyeeTask.Data.Test
                 new Issue() { Id = 2, TaskName = "Сделать круто", ProjectId = 2 });
 
             _context.Employees.AddRange(
-                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", DivisionId = 1 },
-                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", DivisionId = 2 });
+                new Employee { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email1@bk.ru", DivisionId = 1 },
+                new Employee { Id = 2, FirstName = "Виктор", SecondName = "Корнеплод", Email = "email2@bk.ru", DivisionId = 2 });
 
             _context.LaborCosts.AddRange(
                 new LaborCost() { Id = 1, Date = System.DateTime.Now, IssueId = 1, EmployeeId = 1 },

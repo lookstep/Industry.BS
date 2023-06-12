@@ -7,5 +7,6 @@
         Task<IEnumerable<T>> GetAll();
         Task<T> Update(T Entity);
         Task Delete(int id);
+        Task Save();
     }
 }

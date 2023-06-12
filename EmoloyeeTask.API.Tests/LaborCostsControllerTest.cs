@@ -1,10 +1,12 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
 using EmployeeTask.API.Controllers;
+using EmployeeTask.Data.Repositories;
 using EmployeeTask.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EmoloyeeTask.API.Tests
@@ -148,11 +150,11 @@ namespace EmoloyeeTask.API.Tests
         public void UpdateLaborCostStatusOK()
         {
             //arrange
-            var updatedLaborCost = new LaborCost() { Date = DateTime.Now, Id = 1 };
+            var updatedLaborCost = new LaborCost() { Date = DateTime.Now, Id = 1, HourCount = 5 };
 
-            Mock<IDbRepository<LaborCost>> mock = new Mock<IDbRepository<LaborCost>>();
-            mock.Setup(x => x.Update(updatedLaborCost)).ReturnsAsync(updatedLaborCost);
-            mock.Setup(x => x.Get(1)).ReturnsAsync(new LaborCost());
+            var mock = new Mock<IDbRepository<LaborCost>>();
+            mock.Setup(x => x.Get(1)).ReturnsAsync(updatedLaborCost);
+            mock.Setup(x => x.Save()).Returns(Task.CompletedTask);
 
             LaborCostsController laborCostController = new LaborCostsController(mock.Object);
 
@@ -165,6 +167,8 @@ namespace EmoloyeeTask.API.Tests
             Assert.Null(result.Value);
             Assert.Equal(StatusCodes.Status200OK, ((ObjectResult)result.Result!).StatusCode);
         }
+
+
         [Fact]
         public void DeleteLaborCostStatusOk()
         {

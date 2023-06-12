@@ -110,9 +110,7 @@ namespace EmployeeTask.API.Controllers
                 result.Date = laborCosts.Date;
                 result.HourCount = laborCosts.HourCount;
 
-                var saveManager = _laborCostsRepository as LaborCostRepository;
-
-                await saveManager.Save();
+                await _laborCostsRepository.Save();
 
                 return Ok(result);
             }

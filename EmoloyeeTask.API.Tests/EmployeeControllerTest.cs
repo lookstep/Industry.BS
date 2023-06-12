@@ -196,10 +196,28 @@ namespace EmoloyeeTask.API.Tests
         {
             //arrange
             var randName = Guid.NewGuid().ToString();
-            var createdEmployee = new EmployeeDto() { FirstName = randName };
+            var randPass = Guid.NewGuid().ToString();
+            var email = "test@mail.ru";
+            var formFileMock = new Mock<IFormFile>();
+
+            var createdEmployee = new EmployeeDto() {
+                Id = 1,
+                FirstName = randName,
+                Email = email,
+                Password = randPass,
+                SecondName = randName,
+                Role = randName,
+                LastName = randName,
+                ServiceNumber = 123,
+                OneCPass = 123,
+                Post = randName,
+                DivisionId = 1,
+                File = formFileMock.Object
+            };
             var employee = new Employee() { FirstName = createdEmployee.FirstName };
-            Mock<IDbRepository<Employee>> mock = new Mock<IDbRepository<Employee>>();
-            mock.Setup(x => x.Add(employee)).ReturnsAsync(employee);
+            var mock = new Mock<IDbRepository<Employee>>();
+            mock.Setup(x => x.AddWithFile(It.IsAny<Employee>(), It.IsAny<IFormFile>()))
+                .ReturnsAsync((Employee employee, IFormFile file) => employee);
 
             EmployeesController employeeController = new EmployeesController(mock.Object);
 
