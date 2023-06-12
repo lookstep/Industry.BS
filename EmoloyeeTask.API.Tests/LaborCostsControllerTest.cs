@@ -168,7 +168,6 @@ namespace EmoloyeeTask.API.Tests
             Assert.Equal(StatusCodes.Status200OK, ((ObjectResult)result.Result!).StatusCode);
         }
 
-
         [Fact]
         public void DeleteLaborCostStatusOk()
         {
