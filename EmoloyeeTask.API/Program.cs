@@ -105,7 +105,6 @@ builder.Services.AddScoped<IDbRepository<Issue>, IssueRepository>();
 builder.Services.AddScoped<IDbRepository<LaborCost>, LaborCostRepository>();
 builder.Services.AddScoped<IDbRepository<Document>, DocumentRepository>();
 
-
 builder.Services.AddTransient<IMailSender, EmailSender>();
 
 builder.Services.AddMemoryCache();
