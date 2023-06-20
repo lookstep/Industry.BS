@@ -170,9 +170,8 @@ namespace EmployeeTask.API.Controllers
         }
 
         [HttpGet("GetImage")]
-        public IActionResult GetImage(string filename)
+        public IActionResult GetImage([FromForm]string imagePath)
         {
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "storage/PersonalAccount", filename);
             var image = System.IO.File.OpenRead(imagePath);
             return File(image, "image/png");
         }
