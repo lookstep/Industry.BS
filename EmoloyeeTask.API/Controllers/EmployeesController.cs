@@ -142,6 +142,38 @@ namespace EmployeeTask.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ошибка обновления данных сотрудника");
             }
         }
+
+        /// <summary>
+        /// Обновление данных о сотруднике
+        /// </summary>
+        /// <param name="id">Уникальный ключ (берётся из URI)</param>
+        /// <param name="employee">Видоизменённые данные о сотруднике</param>
+        /// <param name="file">Иконка профиля сотрудника</param>
+        /// <returns>Обновленные данные конкретного сотрудника</returns>
+
+        [HttpPatch("{id:int}")]
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<Employee>> UpdateEmployeeFile(int id, Employee employee, [FromForm]IFormFile file)
+        {
+            try
+            {
+                if (employee.Id != id)
+                    return BadRequest("id у работника и зпроса различны");
+
+                var result = await _employeeRepository.Get(id);
+                if (result == null)
+                    return NotFound($"Не удалось найти сотрудника по id: {id}");
+                return Ok(await _employeeRepository.UpdateFile(employee, file));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ошибка обновления данных сотрудника");
+            }
+        }
+
         /// <summary>
         /// Удаление сотрудника по уникальному клчючу 
         /// </summary>
@@ -169,7 +201,32 @@ namespace EmployeeTask.API.Controllers
             }
         }
 
-        [HttpGet("GetImage")]
+        [HttpDelete("file/{id:int}")]
+        [Authorize]
+        [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteEmployeeFile(int id)
+        {
+            try
+            {
+                var result = await _employeeRepository.Get(id);
+                if (result == null)
+                    return NotFound($"Не удалось найти сотрудника по id: {id}");
+
+                if (result.IconPath.Contains("default-user"))
+                    return BadRequest("Невозможно удалить стандартное фото сотрудника.");
+
+                _employeeRepository.DeleteFile(result, result.IconPath);
+                return Ok($"Сотрудник {id} бы успешно удалён");
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ошибка удаления сотрудника");
+            }
+        }
+
+        [HttpPost("GetImage")]
         public IActionResult GetImage([FromForm]string imagePath)
         {
             var image = System.IO.File.OpenRead(imagePath);

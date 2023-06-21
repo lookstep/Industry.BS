@@ -3,12 +3,14 @@ using EmoloyeeTask.Data.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeTask.Data.Repositories
 {
     public class EmployeeRepository : DbRepository<Employee>
     {
         private readonly AppDbContext _db;
+        private readonly ILogger<EmployeeRepository> _logger;
         public EmployeeRepository(AppDbContext db) : base(db)
         {
             _db = db;
@@ -30,49 +32,48 @@ namespace EmployeeTask.Data.Repositories
 
         public override async Task<Employee> AddWithFile(Employee employee, IFormFile file)
         {
+            employee.IconPath = await HandleFile(file, employee.FirstName);
+            return await Add(employee);
+        }
+
+        private async Task<string> HandleFile(IFormFile file, string fileNamePrefix)
+        {
+            var defaultImagePath = Path.Combine(Directory.GetCurrentDirectory(), "storage/PersonalAccount", "default-user.png");
+            var path = string.Empty;
             if (file == null)
             {
-                var defaultImagePath = Path.Combine(Directory.GetCurrentDirectory(), "storage/PersonalAccount", "default-user.png");
-
-                employee.IconPath = File.Exists(defaultImagePath)
-                    ? employee.IconPath = defaultImagePath
-                    : employee.IconPath = null;
-                    
-                return await Add(employee);
+                return File.Exists(defaultImagePath)
+                    ? defaultImagePath
+                    : null!;
             }
 
-            // Check file size
-            if (file.Length > 1 * 1024 * 1024) // 1 MB
-                throw new Exception("File is too large.");
+            if (file.Length > 1 * 1024 * 1024)
+                throw new Exception("Файл больше разрещённого рзмера");
 
-            // Check file type
             var fileExt = Path.GetExtension(file.FileName).Substring(1);
             if (!IsSupportedFileType(fileExt))
-                throw new Exception("Invalid file type.");
+                throw new Exception("Расширение данного файла неподдерживается");
 
-            // Check file content
             try
             {
                 using var image = SixLabors.ImageSharp.Image.Load(file.OpenReadStream());
 
-                var path = Path.Combine(
-                           Directory.GetCurrentDirectory(),
-                           "storage/PersonalAccount",
-                           $"{employee.FirstName}_personalPhoto_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}");
+                path = Path.Combine(
+                          Directory.GetCurrentDirectory(),
+                          "storage/PersonalAccount",
+                          $"{fileNamePrefix}_personalPhoto_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}");
 
                 using var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream);
 
-                employee.IconPath = path;
-
-                return await Add(employee);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Invalid image content.");
+                _logger.LogError($"Произошла ошибка добавления файла: {ex.Message}");
+                path = defaultImagePath;
             }
+            return path;
         }
-
 
         public override async Task Delete(int id)
         {
@@ -80,6 +81,15 @@ namespace EmployeeTask.Data.Repositories
                                   .FirstOrDefaultAsync(x => x.Id == id);
             if (result != null)
             {
+
+                try
+                {
+                    File.Delete(result.IconPath);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Произошла ошибка удаления файла: {ex.Message}");
+                }
                 _db.Remove(result);
                 await _db.SaveChangesAsync();
             }
@@ -130,6 +140,24 @@ namespace EmployeeTask.Data.Repositories
                 return result;
             }
             return null!;
+        }
+
+        public override async Task<Employee> UpdateFile(Employee employee, IFormFile file)
+        {
+            var result = await Get(employee.Id);
+            if (result != null)
+            {
+                result.IconPath = await HandleFile(file, employee.FirstName);
+            }
+
+            return result;
+        }
+
+        public override void DeleteFile(Employee employee, string filePath)
+        {
+            base.DeleteFile(employee, filePath);
+
+            employee.IconPath = Path.Combine(Directory.GetCurrentDirectory(), "storage/PersonalAccount", "default-user.png");
         }
 
         private static bool IsSupportedFileType(string fileExtension)

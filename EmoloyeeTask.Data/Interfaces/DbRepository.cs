@@ -30,6 +30,11 @@ namespace EmoloyeeTask.Data.Interfaces
             await _db.SaveChangesAsync();
         }
 
+        public virtual void DeleteFile(T Entity, string filePath)
+        {
+            File.Delete(filePath);
+        }
+
         public virtual async Task<T> Get(int id)
         {
             return await _db.Set<T>().FirstOrDefaultAsync(x => x.Id == id)!;
@@ -56,6 +61,11 @@ namespace EmoloyeeTask.Data.Interfaces
                 return updatedEntity;
             }
             return null!;
+        }
+
+        public virtual Task<T> UpdateFile(T Entity, IFormFile file)
+        {
+            return Update(Entity);
         }
     }
 }

@@ -104,6 +104,7 @@ builder.Services.AddScoped<IDbRepository<Project>, ProjectRepository>();
 builder.Services.AddScoped<IDbRepository<Issue>, IssueRepository>();
 builder.Services.AddScoped<IDbRepository<LaborCost>, LaborCostRepository>();
 builder.Services.AddScoped<IDbRepository<Document>, DocumentRepository>();
+builder.Services.AddScoped<IEmployeeStatsRepository, EmployeeStatsRepository> ();
 
 builder.Services.AddTransient<IMailSender, EmailSender>();
 
