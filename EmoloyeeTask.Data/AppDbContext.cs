@@ -13,7 +13,6 @@ namespace EmoloyeeTask.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<LaborCost> LaborCosts { get; set; }
-        public DbSet<Document> Documents { get; set; }
         public DbSet<AllowedDeviceCode> AllowedDeviceCode { get; set; }
     }
 }
