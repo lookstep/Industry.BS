@@ -1,9 +1,6 @@
-﻿using Castle.Core.Smtp;
-using EmoloyeeTask.Data.Interfaces;
+﻿using EmoloyeeTask.Data.Interfaces;
 using MimeKit;
 using MimeKit.Utils;
-using System.Net;
-using System.Net.Mail;
 
 public class EmailSender : IMailSender
 {

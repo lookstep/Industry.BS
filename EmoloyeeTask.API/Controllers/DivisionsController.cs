@@ -1,13 +1,6 @@
-﻿using Castle.Core.Smtp;
-using EmoloyeeTask.API.Auth;
-using EmoloyeeTask.Data.Interfaces;
-using EmployeeTask.Shared;
+﻿using EmoloyeeTask.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
-using MimeKit.Utils;
-using System.Net;
-using System.Net.Mail;
 
 namespace EmployeeTask.API.Controllers
 {

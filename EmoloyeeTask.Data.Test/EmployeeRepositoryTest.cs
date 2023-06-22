@@ -1,7 +1,10 @@
-﻿using EmployeeTask.Data.Repositories;
+﻿using Castle.Core.Logging;
+using EmployeeTask.Data.Repositories;
 using EmployeeTask.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System.Linq;
 using Xunit;
 
@@ -39,7 +42,9 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new EmployeeRepository(_context);
+            var loggerMock = new Mock<ILogger<EmployeeRepository>>();
+            ILogger<EmployeeRepository> logger = loggerMock.Object;
+            var repository = new EmployeeRepository(_context, logger);
 
             //act
             var result = repository.Get(id: 2).GetAwaiter().GetResult();
@@ -66,7 +71,9 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new EmployeeRepository(_context);
+            var loggerMock = new Mock<ILogger<EmployeeRepository>>();
+            ILogger<EmployeeRepository> logger = loggerMock.Object;
+            var repository = new EmployeeRepository(_context, logger);
 
             //act
             var result = repository.GetAll().GetAwaiter().GetResult();
@@ -94,7 +101,9 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new EmployeeRepository(_context);
+            var loggerMock = new Mock<ILogger<EmployeeRepository>>();
+            ILogger<EmployeeRepository> logger = loggerMock.Object;
+            var repository = new EmployeeRepository(_context, logger);
 
             var changedEmployee = new Employee() { Id = 1, FirstName = "Олег", SecondName = "Патько", Email = "email1@bk.ru", Password = "321", DivisionId = 1 };
 
@@ -120,7 +129,9 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new EmployeeRepository(_context);
+            var loggerMock = new Mock<ILogger<EmployeeRepository>>();
+            ILogger<EmployeeRepository> logger = loggerMock.Object;
+            var repository = new EmployeeRepository(_context, logger);
 
             var addedEmployee = new Employee() { Id = 1, FirstName = "Михаил", SecondName = "Офунаренко", Email = "email@bk.ru", DivisionId = 1 };
 
@@ -151,7 +162,9 @@ namespace EmoloyeeTask.Data.Test
 
             _context.SaveChanges();
 
-            var repository = new EmployeeRepository(_context);
+            var loggerMock = new Mock<ILogger<EmployeeRepository>>();
+            ILogger<EmployeeRepository> logger = loggerMock.Object;
+            var repository = new EmployeeRepository(_context, logger);
 
             var deletedEmployee = _context.Employees.FirstOrDefault(x => x.Id == 3);
 

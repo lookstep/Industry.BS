@@ -1,6 +1,5 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
 using EmployeeTask.API.Controllers;
-using EmployeeTask.Data.Repositories;
 using EmployeeTask.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

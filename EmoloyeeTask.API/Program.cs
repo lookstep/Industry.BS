@@ -56,8 +56,8 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
-    var filePath = Path.Combine(AppContext.BaseDirectory, "EmployeeTask.Shared.xml");
-    var sharedFilePath = Path.Combine(AppContext.BaseDirectory, "EmoloyeeTask.API.xml");
+    var filePath = Path.Combine(AppContext.BaseDirectory, "Industry.BS.Shared.xml");
+    var sharedFilePath = Path.Combine(AppContext.BaseDirectory, "Industry.BS.API.xml");
 
     c.IncludeXmlComments(filePath);
     c.IncludeXmlComments(sharedFilePath);

@@ -7,23 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="5.1.1" />
     <PackageReference Include="MailKit" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.3" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.20.0" />
-    <PackageReference Include="MimeKit" Version="4.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.4" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.20.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmpolyeeTask.Shared\EmployeeTask.Shared.csproj" />
+    <ProjectReference Include="..\EmoloyeeTask.Data\Industry.BS.Data.csproj" />
   </ItemGroup>
-	<ItemGroup>
-		<Using Include="EmployeeTask.Shared.Base"></Using>
-		<Using Include="EmployeeTask.Shared"></Using>
-	</ItemGroup>
 
 </Project>

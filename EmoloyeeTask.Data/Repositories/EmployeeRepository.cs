@@ -11,9 +11,10 @@ namespace EmployeeTask.Data.Repositories
     {
         private readonly AppDbContext _db;
         private readonly ILogger<EmployeeRepository> _logger;
-        public EmployeeRepository(AppDbContext db) : base(db)
+        public EmployeeRepository(AppDbContext db, ILogger<EmployeeRepository> logger) : base(db)
         {
             _db = db;
+            _logger = logger;
         }
         public override async Task<Employee> Add(Employee employee)
         {

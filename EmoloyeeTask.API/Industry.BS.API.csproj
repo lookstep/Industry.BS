@@ -37,9 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmoloyeeTask.Data.Migrations\EmoloyeeTask.Data.Migrations.csproj" />
-    <ProjectReference Include="..\EmoloyeeTask.Data\EmoloyeeTask.Data.csproj" />
-    <ProjectReference Include="..\EmpolyeeTask.Shared\EmployeeTask.Shared.csproj" />
+    <ProjectReference Include="..\EmoloyeeTask.Data.Migrations\Industry.BS.Data.Migrations.csproj" />
+    <ProjectReference Include="..\EmoloyeeTask.Data\Industry.BS.Data.csproj" />
+    <ProjectReference Include="..\EmpolyeeTask.Shared\Industry.BS.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

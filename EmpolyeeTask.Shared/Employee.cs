@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeTask.Shared
 {

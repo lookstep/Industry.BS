@@ -1,5 +1,4 @@
 ﻿using EmoloyeeTask.Data.Interfaces;
-using EmployeeTask.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
