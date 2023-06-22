@@ -151,6 +151,7 @@ namespace EmployeeTask.Data.Repositories
                 result.IconPath = await HandleFile(file, employee.FirstName);
             }
 
+            await _db.SaveChangesAsync();
             return result;
         }
 
@@ -159,6 +160,7 @@ namespace EmployeeTask.Data.Repositories
             base.DeleteFile(employee, filePath);
 
             employee.IconPath = Path.Combine(Directory.GetCurrentDirectory(), "storage/PersonalAccount", "default-user.png");
+            _db.SaveChanges();
         }
 
         private static bool IsSupportedFileType(string fileExtension)

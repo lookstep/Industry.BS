@@ -1,19 +1,20 @@
-﻿using EmoloyeeTask.Data.Services;
+﻿using Industry.BS.Data.Interfaces;
+using Industry.BS.Data.Repositories;
 
 namespace EmoloyeeTask.API.Auth
 {
     public class DeviceCodeCheckMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<DeviceCodeCheckMiddleware> _logger;
+        private readonly ILogger<IAllowedCashedDeviceCodeRepository> _logger;
 
-        public DeviceCodeCheckMiddleware(RequestDelegate next, ILogger<DeviceCodeCheckMiddleware> logger)
+        public DeviceCodeCheckMiddleware(RequestDelegate next, ILogger<IAllowedCashedDeviceCodeRepository> logger)
         {
             _next = next;
             _logger = logger;
         }
 
-        public async Task InvokeAsync(HttpContext context, CachedDeviceCodeService deviceCodeService)
+        public async Task InvokeAsync(HttpContext context, IDeviceCodeRepository deviceCodeService)
         {
             try
             {
@@ -24,7 +25,7 @@ namespace EmoloyeeTask.API.Auth
                     return;
                 }
 
-                var allowedDeviceCodes = await deviceCodeService.GetAllowedDeviceCode();
+                var allowedDeviceCodes = await deviceCodeService.GetAllAllowedDeviceCodes();
 
                 var deviceCodeInRequest = context.Request.Headers["DeviceCode"].FirstOrDefault();
 

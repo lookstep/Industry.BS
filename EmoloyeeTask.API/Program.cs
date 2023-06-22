@@ -2,8 +2,9 @@ using EmoloyeeTask.API.Auth;
 using EmoloyeeTask.Data;
 using EmoloyeeTask.Data.Interfaces;
 using EmoloyeeTask.Data.Repositories;
-using EmoloyeeTask.Data.Services;
 using EmployeeTask.Data.Repositories;
+using Industry.BS.Data.Interfaces;
+using Industry.BS.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -95,8 +96,8 @@ builder.Services.AddCors(options =>
 }
 );
 
-builder.Services.AddScoped<DeviceCodeService>();
-builder.Services.AddScoped<CachedDeviceCodeService>();
+builder.Services.AddScoped<IDeviceCodeRepository, DeviceCodeRepository>();
+builder.Services.AddScoped<IAllowedCashedDeviceCodeRepository, CachedDeviceCodeRepository>();
 
 builder.Services.AddScoped<IDbRepository<Employee>, EmployeeRepository>();
 builder.Services.AddScoped<IDbRepository<Division>, DivisionRepository>();
@@ -104,7 +105,7 @@ builder.Services.AddScoped<IDbRepository<Project>, ProjectRepository>();
 builder.Services.AddScoped<IDbRepository<Issue>, IssueRepository>();
 builder.Services.AddScoped<IDbRepository<LaborCost>, LaborCostRepository>();
 builder.Services.AddScoped<IDbRepository<Document>, DocumentRepository>();
-builder.Services.AddScoped<IEmployeeStatsRepository, EmployeeStatsRepository> ();
+builder.Services.AddScoped<IEmployeeStatsRepository, EmployeeStatsRepository>();
 
 builder.Services.AddTransient<IMailSender, EmailSender>();
 

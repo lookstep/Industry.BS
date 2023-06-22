@@ -1,5 +1,4 @@
-﻿using Castle.Core.Logging;
-using EmployeeTask.Data.Repositories;
+﻿using EmployeeTask.Data.Repositories;
 using EmployeeTask.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
