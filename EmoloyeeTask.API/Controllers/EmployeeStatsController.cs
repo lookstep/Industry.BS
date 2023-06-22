@@ -17,7 +17,7 @@ namespace EmoloyeeTask.API.Controllers
         {
             try
             {
-                var stats = await _statsRepo.GetWeeklyStats(employeeId);
+                var stats = _statsRepo.GetWeeklyStats(employeeId);
                 return Ok(stats);
             }
             catch (Exception e)
@@ -27,11 +27,11 @@ namespace EmoloyeeTask.API.Controllers
         }
 
         [HttpGet("monthly/{employeeId}")]
-        public async Task<ActionResult<List<float>>> GetMonthlyStats(int employeeId)
+        public async Task<ActionResult<IEnumerable<float>>> GetMonthlyStats(int employeeId)
         {
             try
             {
-                var stats = await _statsRepo.GetMonthlyStats(employeeId);
+                var stats = _statsRepo.GetMonthlyStats(employeeId);
                 return Ok(stats);
             }
             catch (Exception e)

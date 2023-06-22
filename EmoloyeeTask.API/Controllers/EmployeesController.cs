@@ -150,13 +150,12 @@ namespace EmployeeTask.API.Controllers
         /// <param name="employee">Видоизменённые данные о сотруднике</param>
         /// <param name="file">Иконка профиля сотрудника</param>
         /// <returns>Обновленные данные конкретного сотрудника</returns>
-
         [HttpPatch("{id:int}")]
         [ProducesResponseType(typeof(Employee), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Employee>> UpdateEmployeeFile(int id, Employee employee, [FromForm]IFormFile file)
+        public async Task<ActionResult<Employee>> UpdateEmployeeFile(int id, [FromForm]Employee employee, [FromForm]IFormFile file)
         {
             try
             {

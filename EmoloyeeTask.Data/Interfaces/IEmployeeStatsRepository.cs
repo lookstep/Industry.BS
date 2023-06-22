@@ -8,8 +8,8 @@ namespace EmoloyeeTask.Data.Interfaces
 {
     public interface IEmployeeStatsRepository
     {
-        Task<List<float>> GetWeeklyStats(int employeeId);
-        Task<List<float>> GetMonthlyStats(int employeeId);
-        Task<List<float>> GetYearlyStats(int employeeId);
+        public List<float> GetWeeklyStats(int employeeId);
+        public IEnumerable<float> GetMonthlyStats(int employeeId);
+        public Task<List<float>> GetYearlyStats(int employeeId);
     }
 }
