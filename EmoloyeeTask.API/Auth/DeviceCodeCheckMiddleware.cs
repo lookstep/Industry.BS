@@ -6,12 +6,10 @@ namespace EmoloyeeTask.API.Auth
     public class DeviceCodeCheckMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<IAllowedCashedDeviceCodeRepository> _logger;
 
-        public DeviceCodeCheckMiddleware(RequestDelegate next, ILogger<IAllowedCashedDeviceCodeRepository> logger)
+        public DeviceCodeCheckMiddleware(RequestDelegate next)
         {
             _next = next;
-            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context, IDeviceCodeRepository deviceCodeService)
