@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  emoloyee_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: emoloyee_app
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION_STRING=Server=localhost;Database=Industry;User Id=sa;Password=Password1;
+    volumes:
+      - .:/app
+    depends_on:
+      - mssqlserver
+    command: ["dotnet", "Industry.BS.API.dll"]
+
+  mssqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Password1"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - mssqlserver-data:/var/opt/mssql
+    restart: always
+
+volumes:
+  mssqlserver-data:

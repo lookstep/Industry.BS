@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Industry.BS.Data.Test", "Em
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Industry.BS.Shared", "EmpolyeeTask.Shared\Industry.BS.Shared.csproj", "{34ACEB00-5ACC-4EB3-82C2-62AF1E38E53F}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{225EFE35-A8A1-4B7E-8B48-8EE8DA22BB50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{34ACEB00-5ACC-4EB3-82C2-62AF1E38E53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34ACEB00-5ACC-4EB3-82C2-62AF1E38E53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34ACEB00-5ACC-4EB3-82C2-62AF1E38E53F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{225EFE35-A8A1-4B7E-8B48-8EE8DA22BB50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{225EFE35-A8A1-4B7E-8B48-8EE8DA22BB50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{225EFE35-A8A1-4B7E-8B48-8EE8DA22BB50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{225EFE35-A8A1-4B7E-8B48-8EE8DA22BB50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
