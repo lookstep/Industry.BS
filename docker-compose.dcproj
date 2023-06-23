@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>225efe35-a8a1-4b7e-8b48-8ee8da22bb50</ProjectGuid>
+    <ProjectGuid>96c80c34-89c5-463f-97f7-29cf15072f7d</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>industry.bs.api</DockerServiceName>

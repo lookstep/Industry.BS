@@ -1,0 +1,36 @@
+# Установка базового образа .NET 6 SDK
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+# Установка базового образа MSSQL Server Express
+FROM mcr.microsoft.com/mssql/server:2019-latest
+
+WORKDIR /app
+
+# Копирование файлов проекта и восстановление зависимостей
+COPY Industry.BS.API.dll /app/netcore/
+COPY Industry.BS.API.xml /app/netcore/
+COPY Industry.BS.Data.dll /app/netcore/
+COPY Industry.BS.Data.Migrations.dll /app/netcore/
+COPY Industry.BS.Shared.dll /app/netcore/
+COPY Industry.BS.Shared.xml /app/netcore/ 
+COPY Industry.BS.Data.Migrations.pdb /app/netcore/ 
+COPY Industry.BS.Shared.xml /app/netcore/ 
+RUN dotnet restore Industry.BS.API.dll
+
+# Сборка проекта
+RUN dotnet build -c Release --no-restore
+
+# Публикация проекта
+FROM build AS publish
+RUN dotnet publish -c Release --no-build -o /app/publish
+
+# Установка базового образа ASP.NET Core
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+WORKDIR /app
+EXPOSE 80
+
+# Копирование файлов из предыдущего этапа (publish) в рабочую директорию
+COPY --from=publish /app/publish .
+
+# Запуск приложения
+ENTRYPOINT ["dotnet", "Industry.BS.API.dll"]

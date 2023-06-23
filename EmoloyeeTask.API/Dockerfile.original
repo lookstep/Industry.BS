@@ -1,0 +1,15 @@
+# Установка базового образа
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+
+# Установка рабочего каталога в контейнере
+WORKDIR /app
+
+# Копирование файлов приложения в контейнер
+COPY ./netcore .
+
+# Установка портов
+EXPOSE 80
+EXPOSE 443
+
+# Запуск приложения
+ENTRYPOINT ["dotnet", "Industry.BS.API.dll"]
