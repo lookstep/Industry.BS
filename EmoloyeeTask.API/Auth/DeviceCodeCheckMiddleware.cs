@@ -43,7 +43,6 @@ namespace EmoloyeeTask.API.Auth
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync($"Ошибка: {ex.Message}");
             }
