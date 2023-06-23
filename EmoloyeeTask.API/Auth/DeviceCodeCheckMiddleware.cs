@@ -32,7 +32,6 @@ namespace EmoloyeeTask.API.Auth
                 if (deviceCodeInRequest == null || !allowedDeviceCodes.Any(dc => dc.DeviceCode == deviceCodeInRequest))
                 {
                     context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    _logger.LogError($"Ваш код устройства: {deviceCodeInRequest}");
 
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync($"Ваш код устройства пустой или не поддерживается");
